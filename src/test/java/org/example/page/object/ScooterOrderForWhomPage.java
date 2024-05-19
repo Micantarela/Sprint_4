@@ -1,5 +1,12 @@
 package org.example.page.object;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 public class ScooterOrderForWhomPage {
 
     // Заголовок формы
@@ -29,4 +36,41 @@ public class ScooterOrderForWhomPage {
     // Кнопка "Далее" внизу экрана
     public static final String CONTINUE_BUTTON = ".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Далее']";
 
+    private final WebDriver driver;
+
+    public ScooterOrderForWhomPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void waitVisibilityOfTitle() {
+        new WebDriverWait(driver, 3)
+                .until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(TITLE))));
+    }
+
+    public void fillFirstNameInput(String firstName) {
+        driver.findElement(By.xpath(FIRSTNAME_INPUT_FIELD)).sendKeys(firstName);
+    }
+
+    public void fillSecondNameInput(String secondName) {
+        driver.findElement(By.xpath(SECONDNAME_INPUT_FIELD)).sendKeys(secondName);
+    }
+
+    public void fillAddressInput(String address) {
+        driver.findElement(By.xpath(ADDRESS_INPUT_FIELD)).sendKeys(address);
+    }
+
+    public void chooseSubwayStation(String subwayStationElement) {
+        driver.findElement(By.xpath(SUBWAY_STATION_INPUT_FIELD)).click();
+        driver.findElement(By.xpath(subwayStationElement)).click();
+    }
+
+    public void filPhoneNumberInput(String phoneNumber) {
+        driver.findElement(By.xpath(PHONE_NUMBER_INPUT_FIELD)).sendKeys(phoneNumber);
+    }
+
+    public void clickContinueButton() {
+        WebElement continueButton = driver.findElement(By.xpath(CONTINUE_BUTTON));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", continueButton);
+        continueButton.click();
+    }
 }

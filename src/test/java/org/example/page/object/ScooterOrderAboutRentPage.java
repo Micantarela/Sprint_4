@@ -1,5 +1,10 @@
 package org.example.page.object;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 public class ScooterOrderAboutRentPage {
 
     // Заголовок формы
@@ -32,4 +37,37 @@ public class ScooterOrderAboutRentPage {
     // Кнопка Заказать внизу экрана
     public static final String ORDER_BUTTON = ".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Заказать']";
 
+
+    private final WebDriver driver;
+
+    public ScooterOrderAboutRentPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void waitVisibilityOfTitle() {
+        new WebDriverWait(driver, 3)
+                .until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(TITLE))));
+    }
+
+    public void chooseLastDateInMonth() {
+        driver.findElement(By.xpath(DATE_INPUT_FIELD)).click();
+        driver.findElement(By.xpath(LAST_DATE_OF_MONTH_IN_DATEPICKER)).click();
+    }
+
+    public void choosePeriod(String scooterRentPeriodLocator) {
+        driver.findElement(By.xpath(PERIOD_INPUT_FIELD)).click();
+        driver.findElement(By.xpath(scooterRentPeriodLocator)).click();
+    }
+
+    public void chooseColour(String scooterColourLocator) {
+        driver.findElement(By.xpath(scooterColourLocator)).click();
+    }
+
+    public void fillCourierCommentInput(String courierComment) {
+        driver.findElement(By.xpath(COURIER_COMMENT_INPUT_FIELD)).sendKeys(courierComment);
+    }
+
+    public void clickOrderButton() {
+        driver.findElement(By.xpath(ORDER_BUTTON)).click();
+    }
 }

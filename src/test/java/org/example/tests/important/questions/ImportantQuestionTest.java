@@ -1,30 +1,24 @@
 package org.example.tests.important.questions;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.example.page.object.MainPage;
-import org.junit.After;
+import org.example.tests.BaseAutoTest;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 @RunWith(Parameterized.class)
-public class ImportantQuestionTest {
+public class ImportantQuestionTest extends BaseAutoTest {
     private String titleLocator;
-    private String textLocator;
+    private String answerLocator;
     private String expectedText;
-    private WebDriver driver;
 
-    public ImportantQuestionTest(String titleLocator, String textLocator, String expectedText) {
+
+    public ImportantQuestionTest(String titleLocator, String answerLocator, String expectedText) {
         this.titleLocator = titleLocator;
-        this.textLocator = textLocator;
+        this.answerLocator = answerLocator;
         this.expectedText = expectedText;
     }
 
@@ -36,28 +30,16 @@ public class ImportantQuestionTest {
         };
     }
 
-    @Before
-    public void startUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-//        System.setProperty("webdriver.gecko.driver", "C:\\Users\\PC\\Desktop/geckodriver.exe");
-//        driver = new FirefoxDriver();
-    }
-
     @Test
     public void test() {
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+        MainPage mainPage = new MainPage(driver);
 
-        WebElement title = driver.findElement(By.xpath(titleLocator));
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", title);
-        title.click();
+        mainPage.openScooterMainPage();
 
-        WebElement text = driver.findElement(By.xpath(textLocator));
-        Assert.assertEquals(expectedText, text.getText());
+        mainPage.clickToTitle(titleLocator);
+
+        String answerText = mainPage.getAnswerText(answerLocator);
+        Assert.assertEquals(expectedText, answerText);
     }
 
-    @After
-    public void after() {
-        driver.quit();
-    }
 }
